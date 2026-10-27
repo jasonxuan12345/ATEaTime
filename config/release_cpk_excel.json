@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "too_good": {
+    "operator": ">",
+    "threshold": 500,
+    "remark": ""
+  },
+  "sheets": [
+    "raw",
+    "low_CPK_Item",
+    "CPK_too_Good",
+    "Test_without_unit"
+  ],
+  "headers": [
+    "",
+    "Test Nr.",
+    "Test Name",
+    "Unit",
+    "ExecCount",
+    "FailCount",
+    "Lowlim",
+    "Uplim",
+    "Mean",
+    "Std",
+    "cpk/cp",
+    "cpk"
+  ],
+  "colors": {
+    "FAIL": "#F4D2D4",
+    "RISK": "#F9E8BB",
+    "PASS": "#CCE9DF",
+    "UNAVAILABLE": "#E5EAED"
+  }
+}

@@ -1,0 +1,86 @@
+# =============================================================================
+# DeepYield Bin Rule Set
+#
+# Purpose:
+#   Defines deterministic rules used to detect abnormal fail-bin concentration
+#   in semiconductor test data.
+#
+# Scope:
+#   - Supports HBIN and SBIN
+#   - Pass bins are excluded from evaluation
+#   - Only fail-bin concentration is evaluated in v1
+#
+# Notes:
+#   - All findings are WARNING in v1.
+#   - Historical bin baseline/trend comparison is not included in v1.
+#   - Pass-bin definition must come from the existing stage/project policy,
+#     and must NOT be hard-coded in this rule file.
+# =============================================================================
+
+rule_set:
+  rule_set_id: BIN-V1
+  version: "1.0"
+
+
+# -----------------------------------------------------------------------------
+# BIN_ABNORMAL
+# -----------------------------------------------------------------------------
+
+bin_abnormal:
+
+  metric:
+    name: bin_rate
+    source: results.yield.by_bin[].ratio
+
+  population:
+    count_source: results.yield.by_bin[].count
+    total_source: results.yield.overall.count
+
+  applicability:
+    bin_types:
+      - HBIN
+      - SBIN
+
+    # Pass-bin values are resolved from the existing stage/project policy.
+    exclude_pass_bins: true
+
+  calculation:
+    bin_rate:
+      formula: bin_count / total_tested
+
+    minimum_count:
+      formula: max(10, total_tested * 0.01)
+
+  rule:
+    rule_id: BIN-001
+
+    conditions:
+      - metric: bin_rate
+        operator: GE
+        threshold: 0.05
+
+      - metric: bin_count
+        operator: GE
+        threshold_source: minimum_count
+
+    finding_type: BIN_ABNORMAL
+    severity: WARNING
+    emit_finding: true
+
+
+# -----------------------------------------------------------------------------
+# Evidence
+# -----------------------------------------------------------------------------
+
+evidence:
+
+  BIN-001:
+    include:
+      - bin_type
+      - bin_id
+      - bin_name
+      - bin_count
+      - total_tested
+      - bin_rate
+      - minimum_count
+      - rate_threshold

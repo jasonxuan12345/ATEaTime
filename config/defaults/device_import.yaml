@@ -1,0 +1,12 @@
+schema_version: 1
+config_id: public-example-v1
+status: active
+devices:
+  # A disabled, fictional example. Unknown products use the original coordinates.
+  - device_key: EXAMPLE_DEVICE
+    display_name: Example device
+    enabled: false
+    config_version: 1
+    part_type_values: [EXAMPLE_DEVICE]
+    allowed_data_types: [EWS, FT]
+    fail_views: []

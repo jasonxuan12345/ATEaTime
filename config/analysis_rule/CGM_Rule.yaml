@@ -1,0 +1,105 @@
+# =============================================================================
+# DeepYield CGM Rule Set
+#
+# Purpose:
+#   Defines deterministic CG repeatability evaluation rules.
+#
+# Evaluation principle:
+#   CG is evaluated together with Bin1 CPK.
+#
+#   If Bin1 CPK >= 2.0:
+#       CG result is accepted regardless of CG value.
+#
+#   Otherwise:
+#       CG < 1.0        -> FAIL
+#       1.0 <= CG < 1.33 -> RISK
+#       CG >= 1.33      -> PASS
+#
+# =============================================================================
+
+rule_set:
+  rule_set_id: CGM-V1
+  version: "1.0"
+
+
+metric:
+  name: cg
+  source: results.cgm.test_items[].cg
+
+
+supporting_metric:
+  name: bin1_cpk
+  source: results.cpk.test_items[].bin1.cpk
+
+
+evaluation:
+
+  # ---------------------------------------------------------------------------
+  # CPK override
+  # ---------------------------------------------------------------------------
+  - rule_id: CGM-001
+    priority: 1
+    condition:
+      metric: bin1_cpk
+      operator: GE
+      threshold: 2.0
+    status: PASS
+    emit_finding: false
+    reason: CPK_MARGIN_ACCEPTANCE
+
+  # ---------------------------------------------------------------------------
+  # CG fail
+  # ---------------------------------------------------------------------------
+  - rule_id: CGM-002
+    priority: 2
+    condition:
+      metric: cg
+      operator: LT
+      threshold: 1.0
+    status: FAIL
+    severity: FAIL
+    finding_type: CGM_FAIL
+    emit_finding: true
+
+  # ---------------------------------------------------------------------------
+  # CG risk
+  # ---------------------------------------------------------------------------
+  - rule_id: CGM-003
+    priority: 3
+    condition:
+      metric: cg
+      operator: GE_LT
+      lower: 1.0
+      upper: 1.33
+    status: RISK
+    severity: WARNING
+    finding_type: CGM_RISK
+    emit_finding: true
+
+  # ---------------------------------------------------------------------------
+  # CG pass
+  # ---------------------------------------------------------------------------
+  - rule_id: CGM-004
+    priority: 4
+    condition:
+      metric: cg
+      operator: GE
+      threshold: 1.33
+    status: PASS
+    emit_finding: false
+
+
+evidence:
+  include:
+    - test_id
+    - test_name
+    - cg
+    - bin1_cpk
+    - cg_threshold_band
+    - cpk_override_applied
+
+
+on_missing_cg: NOT_EVALUATED
+
+on_missing_bin1_cpk:
+  behavior: EVALUATE_CG_ONLY

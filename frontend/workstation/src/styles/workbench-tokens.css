@@ -1,0 +1,125 @@
+/*
+ * Stage-aware Group Workspace design tokens.
+ * New Workbench components must scope their styles under .group-workbench and
+ * consume --dyw-* tokens. Existing --yield-cyan / --workbench-navy are aliased,
+ * not redefined as duplicate colors.
+ */
+.group-workbench {
+  --dyw-silicon-canvas: #f3f6f7;
+  --dyw-panel-white: #ffffff;
+  --dyw-graphite: #172129;
+  --dyw-instrument-slate: #5f6b73;
+  --dyw-yield-cyan: var(--yield-cyan, #008c99);
+  --dyw-circuit-navy: var(--workbench-navy, #15313b);
+  --dyw-pass: #2f8f63;
+  --dyw-watch: #c8841a;
+  --dyw-fail: #c84242;
+  --dyw-info: #3973a8;
+
+  --dyw-bg: var(--dyw-silicon-canvas);
+  --dyw-surface: var(--dyw-panel-white);
+  --dyw-surface-muted: #edf3f5;
+  --dyw-surface-selected: color-mix(in srgb, var(--dyw-yield-cyan) 8%, var(--dyw-surface));
+  --dyw-text: var(--dyw-graphite);
+  --dyw-text-secondary: var(--dyw-instrument-slate);
+  --dyw-text-muted: color-mix(in srgb, var(--dyw-instrument-slate) 72%, transparent);
+  --dyw-border: rgba(23, 33, 41, 0.12);
+  --dyw-border-soft: rgba(23, 33, 41, 0.07);
+  --dyw-border-strong: rgba(23, 33, 41, 0.22);
+  --dyw-focus-ring: rgba(0, 140, 153, 0.28);
+  --dyw-shadow-surface: 0 8px 22px rgba(21, 49, 59, .055);
+
+  --dyw-space-1: 4px;
+  --dyw-space-2: 8px;
+  --dyw-space-3: 12px;
+  --dyw-space-4: 16px;
+  --dyw-space-5: 20px;
+  --dyw-space-6: 24px;
+
+  --dyw-font-size-utility: 10px;
+  --dyw-font-size-caption: 11px;
+  --dyw-font-size-body: 12px;
+  --dyw-font-size-label: 13px;
+  --dyw-font-size-title: 18px;
+  --dyw-font-size-display: 34px;
+  --dyw-line-height-tight: 1.15;
+  --dyw-line-height-body: 1.45;
+  --dyw-font-mono: "IBM Plex Mono", Consolas, monospace;
+
+  --dyw-control-height-sm: 28px;
+  --dyw-control-height-md: 32px;
+  --dyw-control-height-lg: 36px;
+  --dyw-table-row-height: 48px;
+  --dyw-panel-padding: 16px;
+  --dyw-state-min-height: 220px;
+
+  --dyw-chart-grid: rgba(23, 33, 41, .14);
+  --dyw-map-pass: #34b77c;
+  --dyw-map-fail: #e27064;
+  --dyw-map-surface: #edf6fa;
+  --dyw-risk-critical-bg: #fce8e6;
+  --dyw-risk-critical-text: #9b2c2c;
+  --dyw-risk-warning-bg: #fff4da;
+  --dyw-risk-warning-text: #8a5a12;
+  --dyw-risk-info-bg: #e6f5f8;
+  --dyw-risk-info-text: #1f6f8b;
+
+  --dyw-radius-sm: 6px;
+  --dyw-radius-md: 8px;
+  --dyw-radius-lg: 10px;
+  --dyw-radius-pill: 999px;
+
+  --dyw-gutter: 20px;
+  --dyw-nav-width: 216px;
+  --dyw-globalbar-height: 52px;
+  --dyw-context-height: 76px;
+  --dyw-localnav-height: 44px;
+  --dyw-duration-fast: 140ms;
+  --dyw-duration-panel: 200ms;
+  --dyw-transition-fast: 140ms;
+  --dyw-transition-panel: 200ms;
+  --dyw-motion-fast: var(--dyw-duration-fast) ease;
+  --dyw-motion-panel: var(--dyw-duration-panel) ease-out;
+
+  color: var(--dyw-text);
+  background: var(--dyw-bg);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+.group-workbench :where(button, a, input, select, textarea):focus-visible {
+  outline: 3px solid var(--dyw-focus-ring);
+  outline-offset: 2px;
+}
+
+.group-workbench :where(button, a, input, select, textarea):disabled {
+  cursor: not-allowed;
+}
+
+@media (max-width: 1024px) {
+  .group-workbench {
+    --dyw-nav-width: 64px;
+    --dyw-gutter: 14px;
+    --dyw-globalbar-height: 44px;
+    --dyw-context-height: 56px;
+    --dyw-localnav-height: 36px;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .group-workbench {
+    --dyw-gutter: 16px;
+    --dyw-globalbar-height: 48px;
+    --dyw-context-height: 64px;
+    --dyw-localnav-height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group-workbench,
+  .group-workbench *,
+  .group-workbench *::before,
+  .group-workbench *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

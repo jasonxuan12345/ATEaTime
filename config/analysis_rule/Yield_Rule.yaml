@@ -1,0 +1,95 @@
+# =============================================================================
+# DeepYield Yield Rule Set
+#
+# Purpose:
+#   Defines deterministic rules used to evaluate overall device yield and
+#   test-item yield loss.
+#
+# Important:
+#   Product-specific baseline yield and alert thresholds are stored in:
+#       config/device_yield_monitor.yaml
+#
+#   This file defines evaluation logic only.
+# =============================================================================
+
+rule_set:
+  rule_set_id: YIELD-V1
+  version: "1.0"
+
+
+# -----------------------------------------------------------------------------
+# Overall Yield Monitoring
+# -----------------------------------------------------------------------------
+
+overall_yield:
+
+  metric:
+    name: overall_yield
+    source: results.yield.overall.yield
+
+  baseline:
+    source: device_yield_monitor.yaml
+    match_by:
+      - product
+      - stage
+      - temperature
+      - effective_period
+
+  calculation:
+    yield_drop: baseline_yield - actual_yield
+
+  rules:
+
+    - rule_id: YIELD-001
+      finding_type: YIELD_DROP
+      condition:
+        metric: yield_drop
+        operator: GE
+        threshold_source: yield_drop.fail
+      severity: FAIL
+      emit_finding: true
+
+    - rule_id: YIELD-002
+      finding_type: YIELD_DROP
+      condition:
+        metric: yield_drop
+        operator: GE
+        threshold_source: yield_drop.warning
+        upper_bound_source: yield_drop.fail
+      severity: WARNING
+      emit_finding: true
+
+  on_missing_baseline: NOT_EVALUATED
+
+
+# -----------------------------------------------------------------------------
+# Test Item Yield Loss Monitoring
+# -----------------------------------------------------------------------------
+
+test_item_yield_loss:
+
+  metric:
+    name: test_item_yield_loss
+    source: results.yield.test_items[].yield_loss
+
+  threshold:
+
+    # Use product-specific threshold first when configured in
+    # device_yield_monitor.yaml.
+    custom_source: test_items.<test_id>.yield_loss_warning
+
+    # If no product-specific threshold exists, use 1 percentage point.
+    default: 0.010
+
+  rules:
+
+    - rule_id: YIELD-ITEM-001
+      finding_type: TEST_ITEM_YIELD_LOSS
+      condition:
+        metric: test_item_yield_loss
+        operator: GE
+        threshold_source: resolved_threshold
+      severity: WARNING
+      emit_finding: true
+
+  on_missing_test_item_config: USE_DEFAULT

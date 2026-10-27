@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "sheet": "raw",
+  "filename": "{date}_{device}_Cgm_Report.xlsx",
+  "headers": ["Test Nr.", "Test Name", "Unit", "Lowlim", "Uplim"],
+  "site_headers": ["Mean", "StdDev", "min", "max", "cg*", "ExecCount", "FailCount"],
+  "summary_headers": ["min Cg", "Bin1 CPK", "Result", "Remark"],
+  "thresholds": {"cg_pass": 1.33, "cg_check": 1.0, "cpk_check": 1.67, "cpk_accept": 2.0},
+  "colors": {"Pass": "#74B230", "Need to check": "#F0EA00", "Fail": "#EA0000"}
+}

@@ -1,0 +1,150 @@
+# =============================================================================
+# DeepYield Site Rule Set
+#
+# Purpose:
+#   Defines deterministic rules used to detect site-level abnormalities
+#   in multisite semiconductor test data.
+#
+# Rules:
+#   1. Site yield deviation
+#   2. Site parametric mean shift
+#   3. Site sample-count imbalance
+#
+# Notes:
+#   - All rules emit WARNING findings only in v1.
+#   - These findings indicate conditions requiring further investigation;
+#     they do not directly imply product failure.
+# =============================================================================
+
+rule_set:
+  rule_set_id: SITE-V1
+  version: "1.0"
+
+
+# -----------------------------------------------------------------------------
+# SITE_YIELD_SHIFT
+# -----------------------------------------------------------------------------
+
+site_yield_shift:
+
+  metric:
+    name: site_yield
+    source: results.yield.by_site[].yield
+
+  reference:
+    name: overall_yield
+    source: results.yield.overall.yield
+
+  calculation:
+    yield_gap: overall_yield - site_yield
+
+  rule:
+    rule_id: SITE-001
+    condition:
+      metric: yield_gap
+      operator: GE
+      threshold: 0.05
+    finding_type: SITE_YIELD_SHIFT
+    severity: WARNING
+    emit_finding: true
+
+
+# -----------------------------------------------------------------------------
+# SITE_PARAM_SHIFT
+# -----------------------------------------------------------------------------
+
+site_param_shift:
+
+  metric:
+    name: site_mean
+    source: results.cpk.test_items[].by_site[].mean
+
+  reference:
+    name: overall_mean
+    source: results.cpk.test_items[].all.mean
+
+  normalization:
+    name: overall_std
+    source: results.cpk.test_items[].all.std
+
+  calculation:
+    shift_sigma: abs(site_mean - overall_mean) / overall_std
+
+  rule:
+    rule_id: SITE-002
+    condition:
+      metric: shift_sigma
+      operator: GE
+      threshold: 2.0
+    finding_type: SITE_PARAM_SHIFT
+    severity: WARNING
+    emit_finding: true
+
+  on_zero_std: NOT_EVALUATED
+
+
+# -----------------------------------------------------------------------------
+# SITE_COUNT_IMBALANCE
+# -----------------------------------------------------------------------------
+
+site_count_imbalance:
+
+  metric:
+    name: site_count
+    source: results.yield.by_site[].count
+
+  reference:
+    method: MEDIAN
+    source: results.yield.by_site[].count
+
+  calculation:
+    count_deviation:
+      formula: abs(site_count - median_site_count) / median_site_count
+
+  rule:
+    rule_id: SITE-003
+    condition:
+      metric: count_deviation
+      operator: GE
+      threshold: 0.10
+    finding_type: SITE_COUNT_IMBALANCE
+    severity: WARNING
+    emit_finding: true
+
+  on_zero_reference: NOT_EVALUATED
+
+
+# -----------------------------------------------------------------------------
+# Evidence
+# -----------------------------------------------------------------------------
+
+evidence:
+
+  SITE-001:
+    include:
+      - site
+      - site_count
+      - site_yield
+      - overall_yield
+      - yield_gap
+      - threshold
+
+  SITE-002:
+    include:
+      - test_id
+      - test_name
+      - site
+      - site_count
+      - site_mean
+      - overall_mean
+      - overall_std
+      - shift_sigma
+      - threshold
+
+  SITE-003:
+    include:
+      - site
+      - site_count
+      - median_site_count
+      - count_deviation
+      - threshold

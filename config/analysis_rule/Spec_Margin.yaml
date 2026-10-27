@@ -1,0 +1,89 @@
+# =============================================================================
+# DeepYield Specification Margin Rule Set
+#
+# Purpose:
+#   Detects Bin1 devices that are still within specification but are already
+#   concentrated close to the specification limits.
+#
+# Evaluation principle:
+#   - Only Bin1 devices are evaluated.
+#   - v1 supports test items with both valid LSL and USL.
+#   - The margin band is defined as 5% of the total specification range.
+#   - If at least 1% of valid Bin1 devices fall inside the margin bands,
+#     a SPEC_MARGIN warning finding is emitted.
+#
+# =============================================================================
+
+rule_set:
+  rule_set_id: SPEC-MARGIN-V1
+  version: "1.0"
+
+
+spec_margin:
+
+  population:
+    name: BIN1
+
+  applicability:
+    require_valid_lsl: true
+    require_valid_usl: true
+    require_two_sided_spec: true
+
+  calculation:
+
+    spec_range:
+      formula: usl - lsl
+
+    margin_band:
+      formula: spec_range * 0.05
+
+    lower_margin:
+      lower: lsl
+      upper: lsl + margin_band
+
+    upper_margin:
+      lower: usl - margin_band
+      upper: usl
+
+    marginal_rate:
+      formula: marginal_bin1_count / valid_bin1_count
+
+
+  rule:
+
+    rule_id: SPEC-001
+
+    condition:
+      metric: marginal_rate
+      operator: GE
+      threshold: 0.01
+
+    finding_type: SPEC_MARGIN
+    severity: WARNING
+    emit_finding: true
+
+
+# -----------------------------------------------------------------------------
+# Evidence
+# -----------------------------------------------------------------------------
+
+evidence:
+
+  SPEC-001:
+    include:
+      - test_id
+      - test_name
+      - unit
+      - lsl
+      - usl
+      - spec_range
+      - margin_band
+      - valid_bin1_count
+      - marginal_bin1_count
+      - marginal_rate
+      - threshold
+
+
+on_invalid_spec: NOT_EVALUATED
+
+on_zero_valid_bin1_count: NOT_EVALUATED

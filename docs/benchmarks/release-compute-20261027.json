@@ -1,0 +1,326 @@
+{
+  "date": "2026-10-27",
+  "data": "generated; no customer measurement files",
+  "method": "same-host, sequential fresh processes; fixed RNG seed and identical parameters; one run per implementation",
+  "before": {
+    "workload": {
+      "parts": 3289,
+      "tests": 3713,
+      "sites": 16,
+      "batch_parts": 32,
+      "conditions": 1
+    },
+    "events": 12212057,
+    "retained_bytes": 295033895,
+    "start": {
+      "rss_mb": 372.27,
+      "peak_rss_mb": 372.27
+    },
+    "checks_seconds": 114.25362030000542,
+    "after_checks": {
+      "rss_mb": 1042.33,
+      "peak_rss_mb": 1447.03
+    },
+    "outlier_seconds": 181.53917619999265,
+    "after_outlier": {
+      "rss_mb": 1108.54,
+      "peak_rss_mb": 1447.03
+    },
+    "summary": {
+      "modules": [
+        {
+          "item_group_count": 3713,
+          "status_counts": {
+            "PASS": 3713
+          },
+          "unexecuted_test_count": 0
+        },
+        {
+          "item_group_count": 3713,
+          "status_counts": {
+            "PASS": 3713
+          },
+          "unexecuted_test_count": 0
+        },
+        {
+          "item_group_count": 3713,
+          "status_counts": {
+            "RISK": 3713
+          },
+          "unexecuted_test_count": 0
+        }
+      ],
+      "outlier": {
+        "selected_record_count": 3289,
+        "baseline_count": 59408,
+        "evaluated_baseline_count": 59408,
+        "unevaluated_baseline_count": 0,
+        "candidate_part_count": 1,
+        "candidate_hit_count": 1,
+        "status_counts": {
+          "NO_OUTLIER_FOUND": 59407,
+          "OUTLIER_CANDIDATES": 1
+        },
+        "excluded_counts": {}
+      }
+    }
+  },
+  "after": {
+    "workload": {
+      "parts": 3289,
+      "tests": 3713,
+      "sites": 16,
+      "batch_parts": 32,
+      "conditions": 1
+    },
+    "events": 12212057,
+    "retained_bytes": 295033895,
+    "start": {
+      "rss_mb": 372.58,
+      "peak_rss_mb": 372.58
+    },
+    "checks_seconds": 53.74992380000185,
+    "after_checks": {
+      "rss_mb": 536.81,
+      "peak_rss_mb": 605.82
+    },
+    "outlier_seconds": 40.001122599991504,
+    "after_outlier": {
+      "rss_mb": 597.57,
+      "peak_rss_mb": 712.46
+    },
+    "summary": {
+      "modules": [
+        {
+          "item_group_count": 3713,
+          "status_counts": {
+            "PASS": 3713
+          },
+          "unexecuted_test_count": 0
+        },
+        {
+          "item_group_count": 3713,
+          "status_counts": {
+            "PASS": 3713
+          },
+          "unexecuted_test_count": 0
+        },
+        {
+          "item_group_count": 3713,
+          "status_counts": {
+            "RISK": 3713
+          },
+          "unexecuted_test_count": 0
+        }
+      ],
+      "outlier": {
+        "selected_record_count": 3289,
+        "baseline_count": 59408,
+        "evaluated_baseline_count": 59408,
+        "unevaluated_baseline_count": 0,
+        "candidate_part_count": 1,
+        "candidate_hit_count": 1,
+        "status_counts": {
+          "NO_OUTLIER_FOUND": 59407,
+          "OUTLIER_CANDIDATES": 1
+        },
+        "excluded_counts": {}
+      }
+    }
+  },
+  "other_observations": [
+    {
+      "context": "Initial pair, before the final code cleanup; absolute times varied with machine load",
+      "before": {
+        "workload": {
+          "parts": 3289,
+          "tests": 3713,
+          "sites": 16,
+          "batch_parts": 32
+        },
+        "events": 12212057,
+        "retained_bytes": 295030606,
+        "start": {
+          "rss_mb": 369.88,
+          "peak_rss_mb": 369.88
+        },
+        "checks_seconds": 37.472288900011335,
+        "after_checks": {
+          "rss_mb": 1009.45,
+          "peak_rss_mb": 1414.41
+        },
+        "outlier_seconds": 32.90917240000272,
+        "after_outlier": {
+          "rss_mb": 1092.76,
+          "peak_rss_mb": 1414.41
+        },
+        "summary": {
+          "modules": [
+            {
+              "item_group_count": 3713,
+              "status_counts": {
+                "PASS": 3713
+              },
+              "unexecuted_test_count": 0
+            },
+            {
+              "item_group_count": 3713,
+              "status_counts": {
+                "PASS": 3713
+              },
+              "unexecuted_test_count": 0
+            },
+            {
+              "item_group_count": 3713,
+              "status_counts": {
+                "RISK": 3713
+              },
+              "unexecuted_test_count": 0
+            }
+          ],
+          "outlier": {
+            "selected_record_count": 3289,
+            "baseline_count": 59408,
+            "evaluated_baseline_count": 59408,
+            "unevaluated_baseline_count": 0,
+            "candidate_part_count": 1,
+            "candidate_hit_count": 1,
+            "status_counts": {
+              "NO_OUTLIER_FOUND": 59407,
+              "OUTLIER_CANDIDATES": 1
+            },
+            "excluded_counts": {}
+          }
+        }
+      },
+      "after": {
+        "workload": {
+          "parts": 3289,
+          "tests": 3713,
+          "sites": 16,
+          "batch_parts": 32
+        },
+        "events": 12212057,
+        "retained_bytes": 295030606,
+        "start": {
+          "rss_mb": 371.57,
+          "peak_rss_mb": 371.57
+        },
+        "checks_seconds": 16.02422619999561,
+        "after_checks": {
+          "rss_mb": 536.15,
+          "peak_rss_mb": 605.15
+        },
+        "outlier_seconds": 10.102985799996532,
+        "after_outlier": {
+          "rss_mb": 596.54,
+          "peak_rss_mb": 711.36
+        },
+        "summary": {
+          "modules": [
+            {
+              "item_group_count": 3713,
+              "status_counts": {
+                "PASS": 3713
+              },
+              "unexecuted_test_count": 0
+            },
+            {
+              "item_group_count": 3713,
+              "status_counts": {
+                "PASS": 3713
+              },
+              "unexecuted_test_count": 0
+            },
+            {
+              "item_group_count": 3713,
+              "status_counts": {
+                "RISK": 3713
+              },
+              "unexecuted_test_count": 0
+            }
+          ],
+          "outlier": {
+            "selected_record_count": 3289,
+            "baseline_count": 59408,
+            "evaluated_baseline_count": 59408,
+            "unevaluated_baseline_count": 0,
+            "candidate_part_count": 1,
+            "candidate_hit_count": 1,
+            "status_counts": {
+              "NO_OUTLIER_FOUND": 59407,
+              "OUTLIER_CANDIDATES": 1
+            },
+            "excluded_counts": {}
+          }
+        }
+      }
+    },
+    {
+      "context": "Final implementation, unpaired run under a different machine load; do not calculate a speedup against the initial baseline",
+      "after": {
+        "workload": {
+          "parts": 3289,
+          "tests": 3713,
+          "sites": 16,
+          "batch_parts": 32,
+          "conditions": 1
+        },
+        "events": 12212057,
+        "retained_bytes": 295033895,
+        "start": {
+          "rss_mb": 372.44,
+          "peak_rss_mb": 372.44
+        },
+        "checks_seconds": 60.33863340000971,
+        "after_checks": {
+          "rss_mb": 538.43,
+          "peak_rss_mb": 607.09
+        },
+        "outlier_seconds": 45.47798879999027,
+        "after_outlier": {
+          "rss_mb": 599.15,
+          "peak_rss_mb": 714.14
+        },
+        "summary": {
+          "modules": [
+            {
+              "item_group_count": 3713,
+              "status_counts": {
+                "PASS": 3713
+              },
+              "unexecuted_test_count": 0
+            },
+            {
+              "item_group_count": 3713,
+              "status_counts": {
+                "PASS": 3713
+              },
+              "unexecuted_test_count": 0
+            },
+            {
+              "item_group_count": 3713,
+              "status_counts": {
+                "RISK": 3713
+              },
+              "unexecuted_test_count": 0
+            }
+          ],
+          "outlier": {
+            "selected_record_count": 3289,
+            "baseline_count": 59408,
+            "evaluated_baseline_count": 59408,
+            "unevaluated_baseline_count": 0,
+            "candidate_part_count": 1,
+            "candidate_hit_count": 1,
+            "status_counts": {
+              "NO_OUTLIER_FOUND": 59407,
+              "OUTLIER_CANDIDATES": 1
+            },
+            "excluded_counts": {}
+          }
+        }
+      }
+    }
+  ]
+}

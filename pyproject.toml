@@ -1,0 +1,10 @@
+[project]
+name = "datalog-check"
+version = "1.0.0"
+description = "Independent local STDF Release checks"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"
+norecursedirs = ["workspaces", "node_modules", "runtime", ".venv"]

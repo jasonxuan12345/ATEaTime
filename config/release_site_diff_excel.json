@@ -1,0 +1,1 @@
+{"version":"1.0","sheets":["raw","Abnormal_Site_Diff"],"headers":["Test Nr.","Test Name","Unit","Lowlim (LSL)","Uplim (USL)","Overall n","Overall Mean","Overall Std","Overall Cp"],"summary_headers":["Worst Site","Trigger Condition","Max Site Mean Diff","Mean Diff % Spec","Site Std Ratio","Result","Remark"],"colors":{"Pass":"#DDEBD1","Need to check":"#F9E8BB","Fail":"#F4D2D4"}}

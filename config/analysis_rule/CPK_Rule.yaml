@@ -1,0 +1,50 @@
+rule_set:
+  rule_set_id: CPK-V1
+  version: "1.0"
+
+  metric:
+    name: bin1_cpk
+    population: BIN1
+    source: results.cpk.test_items[].bin1.cpk
+
+  evaluability:
+    source: results.cpk.test_items[].bin1
+    require_valid_cpk: true
+    on_unevaluable: NO_FINDING
+
+  bands:
+    - rule_id: CPK-001
+      condition: "< 1.67"
+      status: FAIL
+      severity: FAIL
+      finding_type: CPK_FAIL
+      emit_finding: true
+
+    - rule_id: CPK-002
+      condition: ">= 1.67 and < 2.0"
+      status: RISK
+      severity: WARNING
+      finding_type: CPK_RISK
+      emit_finding: true
+
+    - rule_id: CPK-003
+      condition: ">= 2.0"
+      status: PASS
+      emit_finding: false
+
+  evidence:
+    include:
+      - test_id
+      - test_name
+      - bin1_cpk
+      - bin1_count
+      - lsl
+      - usl
+      - threshold_band
+
+  auxiliary_metrics:
+    all_cpk:
+      source: results.cpk.test_items[].all.cpk
+      classification_metric: false
+      emit_finding: false
+      purpose: ANALYSIS_ONLY

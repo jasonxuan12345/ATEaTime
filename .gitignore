@@ -1,0 +1,62 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+frontend/node_modules/
+frontend/workstation/node_modules/
+runtime/
+workspaces/*/*/evidence/test-tmp/
+
+# Local records, exported reports and build products.
+/workspaces/
+/output/
+/build/
+/cpp/stdf_parser/build*/
+/frontend/dist/
+*.log
+*.tmp
+
+# Private project experience, including imported and derived copies.
+release_Knowledge/
+Test_Knowledge_Base.*
+AI_Expert_Rule_Book.*
+*项目经验*
+*经验表*
+/config/release_knowledge.json
+/config/release_cgm_knowledge.json
+/config/release_remark_templates.json
+/config/release_chart_families.yaml
+
+# Product identities, test mappings and yield baselines.
+/config/device_yield_monitor.yaml
+/deepyield/config/devices/device_import.yaml
+
+# Optional private overrides must remain local.
+/config/private/
+
+# Measurement files and spreadsheet copies stay local by default.
+*.stdf
+*.stdf.*
+*.STDF
+*.STDF.*
+*.std
+*.std.*
+*.STD
+*.STD.*
+*.parquet
+*.arrow
+*.feather
+*.csv
+*.tsv
+*.xls
+*.xlsx
+*.xlsm
+
+# Local credentials and private keys.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx

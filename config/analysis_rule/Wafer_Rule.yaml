@@ -1,0 +1,126 @@
+# =============================================================================
+# DeepYield Wafer Rule Set
+#
+# Purpose:
+#   Defines deterministic rules used to detect wafer-level abnormalities.
+#
+# Reference population:
+#   All wafer comparisons are made within the same:
+#     - Lot
+#     - Stage
+#     - Temperature
+#
+# Rules:
+#   1. Wafer yield deviation
+#   2. Wafer parametric mean shift
+#
+# Notes:
+#   - All rules emit WARNING findings only in v1.
+#   - Wafer sample-count imbalance is not evaluated in v1.
+#   - Spatial patterns such as edge/ring/cluster abnormalities are handled
+#     separately by wafer spatial analysis rules.
+# =============================================================================
+
+rule_set:
+  rule_set_id: WAFER-V1
+  version: "1.0"
+
+
+# -----------------------------------------------------------------------------
+# WAFER_YIELD_SHIFT
+# -----------------------------------------------------------------------------
+
+wafer_yield_shift:
+
+  metric:
+    name: wafer_yield
+    source: results.yield.by_wafer[].yield
+
+  reference:
+    scope:
+      - same_lot
+      - same_stage
+      - same_temperature
+    metric: reference_yield
+
+  calculation:
+    yield_gap: reference_yield - wafer_yield
+
+  rule:
+    rule_id: WAFER-001
+    condition:
+      metric: yield_gap
+      operator: GE
+      threshold: 0.05
+    finding_type: WAFER_YIELD_SHIFT
+    severity: WARNING
+    emit_finding: true
+
+
+# -----------------------------------------------------------------------------
+# WAFER_PARAM_SHIFT
+# -----------------------------------------------------------------------------
+
+wafer_param_shift:
+
+  metric:
+    name: wafer_mean
+    source: results.cpk.test_items[].by_wafer[].mean
+
+  reference:
+    scope:
+      - same_lot
+      - same_stage
+      - same_temperature
+    mean_source: reference_mean
+    std_source: reference_std
+
+  calculation:
+    shift_sigma:
+      formula: abs(wafer_mean - reference_mean) / reference_std
+
+  rule:
+    rule_id: WAFER-002
+    condition:
+      metric: shift_sigma
+      operator: GE
+      threshold: 2.0
+    finding_type: WAFER_PARAM_SHIFT
+    severity: WARNING
+    emit_finding: true
+
+  on_zero_std: NOT_EVALUATED
+
+
+# -----------------------------------------------------------------------------
+# Evidence
+# -----------------------------------------------------------------------------
+
+evidence:
+
+  WAFER-001:
+    include:
+      - lot
+      - wafer
+      - stage
+      - temperature
+      - wafer_count
+      - wafer_yield
+      - reference_yield
+      - yield_gap
+      - threshold
+
+  WAFER-002:
+    include:
+      - test_id
+      - test_name
+      - lot
+      - wafer
+      - stage
+      - temperature
+      - wafer_count
+      - wafer_mean
+      - reference_mean
+      - reference_std
+      - shift_sigma
+      - threshold

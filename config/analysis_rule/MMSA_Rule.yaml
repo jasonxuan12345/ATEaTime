@@ -1,0 +1,165 @@
+# =============================================================================
+# DeepYield MMSA Rule Set (Multi-Site Measurement System Analysis / Site Diff)
+#
+# Purpose:
+#   Deterministic site-diff diagnosis for test items whose Overall bin1 CPK
+#   or site repeatability (Min Cg) falls below the gate. Dual-parameter
+#   complementary method:
+#     - S2S_shift   : site-to-site mean shift normalized by overall std
+#     - S2S_shift_spec : same shift normalized by spec bandwidth (two-sided
+#       only). Reported alongside the remark; never a trigger.
+#     - S2S_var     : worst site std over median site std
+#
+# Parameter severity bands (green / yellow / red) live in `parameters`.
+# The decision tree lives in deepyield/compute/release_mmsa.py and consumes
+# only these YAML values; adjust thresholds here, never in code.
+#
+# Outcome statuses never escalate the merged release verdict: rules 1-4 and
+# 7-8 are RISK (root cause established), rules 5/6 are REVIEW_REQUIRED; items
+# below every gate condition are NOT_APPLICABLE. The bands are engineering
+# references, not standard definitions.
+# =============================================================================
+
+rule_set:
+  rule_set_id: MMSA-V1
+  version: "1.1"
+
+
+# -----------------------------------------------------------------------------
+# Diagnosis gate: an item enters the tree when ANY condition holds, mirroring
+# the expert rule book (CPK < 2.0 or Min_CGM < 1.33).
+# -----------------------------------------------------------------------------
+
+gate:
+  trigger: ANY
+  conditions:
+    - metric: overall_bin1_cpk
+      operator: LT
+      threshold: 2.0
+    - metric: cgm_min_cg
+      operator: LT
+      threshold_source: CGM-004
+  on_missing_support: NOT_EVALUATED
+
+
+# -----------------------------------------------------------------------------
+# Parameter severity bands (green_lt = green upper bound, red_ge = red lower
+# bound; in-between is yellow).
+# -----------------------------------------------------------------------------
+
+parameters:
+  shift_sigma:
+    green_lt: 1.0
+    red_ge: 2.0
+  shift_spec_pct:
+    green_lt: 8.0
+    red_ge: 15.0
+  var_ratio:
+    green_lt: 1.5
+    red_ge: 2.5
+
+
+# -----------------------------------------------------------------------------
+# Rule 5 sub-judgment (silicon distribution / limit mapping). Requires a
+# two-sided effective spec; Cp = bandwidth / (6 * overall std); margin is the
+# smaller distance from the overall mean to a limit over the bandwidth.
+# Reference values, not standard definitions.
+# -----------------------------------------------------------------------------
+
+distribution_split:
+  cp_close_ge: 2.0
+  margin_close_lt: 0.22
+  cp_wide_lt: 1.67
+
+
+# -----------------------------------------------------------------------------
+# Branch 1 reference: per-site Cg below the CGM-004 pass threshold counts as
+# a failing site; up to local_fault_max_sites failing sites is a local fault,
+# more than that points to test resolution or method.
+# -----------------------------------------------------------------------------
+
+cgm_reference:
+  cg_pass_threshold_source: CGM-004
+  local_fault_max_sites: 4
+
+
+# -----------------------------------------------------------------------------
+# Diagnosis outcomes. Status vocabulary matches the Release check matrix.
+# -----------------------------------------------------------------------------
+
+rules:
+  - rule_id: MMSA-001
+    priority: 1
+    status: RISK
+    severity: WARNING
+    finding_type: MMSA_LOCAL_SITE_FAULT
+    emit_finding: true
+    reason: LOCAL_SITE_HARDWARE_FAULT
+
+  - rule_id: MMSA-002
+    priority: 2
+    status: RISK
+    severity: WARNING
+    finding_type: MMSA_TEST_METHOD_FAULT
+    emit_finding: true
+    reason: TEST_RESOLUTION_OR_METHOD
+
+  - rule_id: MMSA-003
+    priority: 3
+    status: RISK
+    severity: WARNING
+    finding_type: MMSA_SYSTEMATIC_SITE_SHIFT
+    emit_finding: true
+    reason: SYSTEMATIC_SITE_SHIFT
+
+  - rule_id: MMSA-004
+    priority: 4
+    status: RISK
+    severity: WARNING
+    finding_type: MMSA_SITE_VARIANCE_ANOMALY
+    emit_finding: true
+    reason: SITE_VARIANCE_ANOMALY
+
+  - rule_id: MMSA-005
+    priority: 5
+    status: REVIEW_REQUIRED
+    severity: WARNING
+    finding_type: MMSA_DISTRIBUTION_OR_LIMIT
+    emit_finding: true
+    reason: DISTRIBUTION_OR_LIMIT_REVIEW
+
+  - rule_id: MMSA-006
+    priority: 6
+    status: REVIEW_REQUIRED
+    severity: WARNING
+    finding_type: MMSA_S2S_INCONCLUSIVE
+    emit_finding: true
+    reason: S2S_EVIDENCE_INCONCLUSIVE
+
+  - rule_id: MMSA-007
+    priority: 7
+    status: RISK
+    severity: WARNING
+    finding_type: MMSA_CLOSE_TO_LIMIT
+    emit_finding: true
+    reason: CLOSE_TO_LIMIT_MARGIN
+
+  - rule_id: MMSA-008
+    priority: 8
+    status: RISK
+    severity: WARNING
+    finding_type: MMSA_DISTRIBUTION_WIDE
+    emit_finding: true
+    reason: DISTRIBUTION_WIDE_OR_BIMODAL
+
+
+evidence:
+  include:
+    - test_id
+    - test_name
+    - shift_sigma
+    - shift_spec_pct
+    - var_ratio
+    - overall_bin1_cpk
+    - cgm_min_cg
+    - rule_id

@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "mmsa": {
+    "LOCAL_SITE_HARDWARE_FAULT": "Site repeatability differs. Review the current measurement evidence before assigning a cause.",
+    "TEST_RESOLUTION_OR_METHOD": "Review measurement resolution and repeatability across sites.",
+    "SYSTEMATIC_SITE_SHIFT": "Site means differ under the configured comparison. Review the measurements and site setup.",
+    "SITE_VARIANCE_ANOMALY": "Site spread differs under the configured comparison. Review the measurements and site setup.",
+    "CLOSE_TO_LIMIT_MARGIN": "The mean is close to a specification limit. Review the specification and measurement distribution.",
+    "DISTRIBUTION_WIDE_OR_BIMODAL": "Review the measurement distribution. These statistics do not establish bimodality.",
+    "DISTRIBUTION_OR_LIMIT_REVIEW": "Review the distribution and specification limits.",
+    "S2S_EVIDENCE_INCONCLUSIVE": "The site comparison is inconclusive. Engineering review is required."
+  },
+  "unavailable": {
+    "MISSING_UNIT": "Unit is not recorded; verify the test definition. This does not identify a digital test.",
+    "NO_EFFECTIVE_LIMIT": "CPK requires an effective specification limit.",
+    "NO_EFFECTIVE_TWO_SIDED_LIMIT": "Cg requires effective two-sided specification limits.",
+    "INVALID_LIMIT_ORDER": "Specification limits are invalid or reversed.",
+    "ZERO_OR_UNAVAILABLE_STD": "Standard deviation is zero or unavailable. Capability cannot be calculated.",
+    "TOO_FEW_VALID_SAMPLES": "There are too few valid samples for the configured evaluation.",
+    "TOO_FEW_USABLE_SITES": "Site Diff requires at least two sites with valid statistics.",
+    "INCOMPLETE_SITE_COVERAGE": "Selected site coverage is incomplete. Cg acceptance is not evaluated.",
+    "NO_SELECTED_EXECUTION": "No test execution exists in the selected records.",
+    "FUNCTIONAL_TEST": "Capability statistics do not apply to functional tests.",
+    "NON_PARAMETRIC_TEST": "Statistical outlier screening does not apply to functional tests.",
+    "ZERO_ROBUST_SPREAD": "Robust spread is zero. An outlier baseline cannot be calculated.",
+    "MISSING_OR_INVALID_CHANNEL": "Head or site identity is unavailable. The outlier baseline cannot be evaluated.",
+    "GATE_NOT_TRIGGERED": "The configured gate does not require a Site Diff evaluation.",
+    "NO_MATCHED_BIN1_CPK": "Matching evaluable CPK/Cg support is unavailable.",
+    "MISSING_CG": "Cg is unavailable. Capability acceptance cannot be evaluated."
+  },
+  "families": []
+}
